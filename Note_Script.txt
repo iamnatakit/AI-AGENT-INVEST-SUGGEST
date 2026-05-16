@@ -1,0 +1,80 @@
+
+
+Remove-Item -Recurse -Force "D:\AI AGENT INVEST SUGGEST\frontend"
+
+1. ออกจากโฟลเดอร์ frontend เดิม และเข้าไปที่ frontend_react:
+powershell
+terminal
+alternate_email
+content_copy
+cd ..\frontend_react
+2. ติดตั้งแพ็กเกจ (Install Dependencies):
+powershell
+terminal
+alternate_email
+content_copy
+
+npm install
+
+3. รันโปรแกรม (Start Dev Server):
+powershell
+terminal
+alternate_email
+content_copy
+
+npm run dev
+
+พิมพ์ตาม 3 บรรทัดนี้ได้เลยครับ! หน้าเว็บจะรันขึ้นมาที่ http://localhost:3300 ครับ
+
+cd "D:\AI AGENT INVEST SUGGEST"
+.venv\Scripts\activate
+uvicorn project_1_investment_ai_agent.app.main:app --host 127.0.0.1 --port 8801 --reload
+
+
+
+
+cd "D:\AI AGENT INVEST SUGGEST"
+.venv\Scripts\activate
+uvicorn project_2_investment_ai_agent_intent.app.main:app --host 127.0.0.1 --port 8802 --reload
+
+Remove-Item -Recurse -Force "D:\AI AGENT INVEST SUGGEST\investment_ai_projects"
+
+Remove-Item -Recurse -Force "D:\AI AGENT INVEST SUGGEST\investment-ai-agent-research"
+
+
+ผมได้เพิ่ม *.db ลงไปในไฟล์ .gitignore ให้เรียบร้อยแล้วครับ เพื่อป้องกันไม่ให้เผลออัปโหลดไฟล์ฐานข้อมูลขึ้นไปด้วย (เพื่อความปลอดภัยและประหยัดพื้นที่)
+การอัปโหลดโปรเจกต์นี้ขึ้น GitHub มีขั้นตอนดังนี้ครับ:
+ขั้นตอนที่ 1: เตรียมโปรเจกต์ในเครื่อง
+เปิด Terminal หน้าต่างใหม่ แล้วพิมพ์คำสั่งเหล่านี้ทีละบรรทัดครับ:
+powershell
+alternate_email
+content_copy
+# 1. สร้าง Git Repository ในโฟลเดอร์นี้
+git init
+￼
+# 2. เพิ่มไฟล์ทั้งหมดเตรียม Commit (ไม่ต้องห่วง ไฟล์ .env และอื่นๆ ถูกกันไว้แล้ว)
+git add .
+￼
+# 3. บันทึกการเปลี่ยนแปลง (Commit)
+git commit -m "Initial commit: Dual-Agent Investment AI Project"
+￼
+# 4. เปลี่ยนชื่อ Branch หลักให้เป็น main
+git branch -M main
+ขั้นตอนที่ 2: สร้าง Repository ใหม่บนเว็บ GitHub
+1. เปิดเว็บไซต์ GitHub.com ล็อกอินให้เรียบร้อย
+2. กดปุ่ม New (หรือเครื่องหมาย + มุมขวาบน -> New repository)
+3. ตั้งชื่อ Repository เช่น investment-ai-agent-research
+4. ปรับเป็น Public หรือ Private ตามต้องการ
+5. ไม่ต้องติ๊ก Add a README (เพราะเรามีอยู่แล้ว)
+6. กด Create repository
+ขั้นตอนที่ 3: อัปโหลดโค้ดขึ้น GitHub
+หลังจากสร้างเสร็จ GitHub จะแสดงหน้าจอที่มีคำสั่ง ให้คุณก๊อปปี้ 2 บรรทัดนี้ (หรือเปลี่ยน URL ให้เป็นของคุณ) มาเปิดรันใน Terminal ครับ:
+powershell
+alternate_email
+content_copy
+# ตัวอย่าง: เปลี่ยนลิ้งก์ให้เป็น Repository ของคุณ
+git remote add origin https://github.com/ชื่อยูสเซอร์/ชื่อโปรเจกต์.git
+￼
+# อัปโหลดขึ้น GitHub
+git push -u origin main
+เสร็จเรียบร้อยครับ! โค้ดที่คลีนแล้วทั้งหมดจะขึ้นไปอยู่บน GitHub พร้อมให้เอาไปเสนองานวิจัยต่อได้เลยครับ!

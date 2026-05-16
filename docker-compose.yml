@@ -1,0 +1,41 @@
+name: investment_ai_lite
+
+services:
+  backend_baseline:
+    build: 
+      context: .
+      dockerfile: Dockerfile.backend
+    command: uvicorn project_1_investment_ai_agent.app.main:app --host 0.0.0.0 --port 8801
+    ports:
+      - "8801:8801"
+    env_file:
+      - .env
+    volumes:
+      # Map the SQLite file into the container
+      - ./investment_chatbot.db:/app/investment_chatbot.db
+
+  backend_intent:
+    build: 
+      context: .
+      dockerfile: Dockerfile.backend
+    command: uvicorn project_2_investment_ai_agent_intent.app.main:app --host 0.0.0.0 --port 8802
+    ports:
+      - "8802:8802"
+    env_file:
+      - .env
+    volumes:
+      # Map the SQLite file into the container
+      - ./investment_chatbot.db:/app/investment_chatbot.db
+
+  frontend:
+    build:
+      context: ./frontend_react
+      dockerfile: Dockerfile
+    ports:
+      - "3300:3300"
+    environment:
+      - VITE_API_BASELINE_URL=http://backend_baseline:8801
+      - VITE_API_INTENT_URL=http://backend_intent:8802
+    depends_on:
+      - backend_baseline
+      - backend_intent

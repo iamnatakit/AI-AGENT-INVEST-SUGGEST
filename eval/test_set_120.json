@@ -1,0 +1,11 @@
+[
+  {"id": 1, "message": "Hi, how are you today?", "expected_domain": "smalltalk"},
+  {"id": 2, "message": "What is an ETF?", "expected_domain": "general_finance"},
+  {"id": 3, "message": "What is the current price of AAPL?", "expected_domain": "stock_quick_check"},
+  {"id": 4, "message": "Is the RSI for TSLA overbought?", "expected_domain": "technical_analysis"},
+  {"id": 5, "message": "What is the P/E ratio of MSFT?", "expected_domain": "fundamental_analysis"},
+  {"id": 6, "message": "Please do a detailed analysis of NVDA including news and fundamentals.", "expected_domain": "stock_deep_analysis"},
+  {"id": 7, "message": "My portfolio is 80% tech stocks. Is this too risky?", "expected_domain": "portfolio_analysis"},
+  {"id": 8, "message": "Will the Fed rate cut affect the stock market?", "expected_domain": "news_macro"},
+  {"id": 9, "message": "I am 25 and have $10,000. Should I buy crypto?", "expected_domain": "suitability"}
+]

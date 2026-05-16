@@ -1,0 +1,1 @@
+id,message,expected_domain,actual_domain,prompt_tokens,completion_tokens,total_tokens,cost_usd,latency_ms,intent_accuracy,compliance_passed,quality_score

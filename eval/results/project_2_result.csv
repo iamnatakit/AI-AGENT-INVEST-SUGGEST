@@ -1,0 +1,10 @@
+id,message,expected_domain,actual_domain,prompt_tokens,completion_tokens,total_tokens,cost_usd,latency_ms,intent_accuracy,compliance_passed,quality_score
+1,"Hi, how are you today?",smalltalk,unknown,0,0,0,0.0,21,0,0,0
+2,What is an ETF?,general_finance,unknown,0,0,0,0.0,15,0,0,0
+3,What is the current price of AAPL?,stock_quick_check,unknown,0,0,0,0.0,11,0,0,0
+4,Is the RSI for TSLA overbought?,technical_analysis,unknown,0,0,0,0.0,8,0,0,0
+5,What is the P/E ratio of MSFT?,fundamental_analysis,unknown,0,0,0,0.0,12,0,0,0
+6,Please do a detailed analysis of NVDA including news and fundamentals.,stock_deep_analysis,unknown,0,0,0,0.0,12,0,0,0
+7,My portfolio is 80% tech stocks. Is this too risky?,portfolio_analysis,unknown,0,0,0,0.0,13,0,0,0
+8,Will the Fed rate cut affect the stock market?,news_macro,unknown,0,0,0,0.0,18,0,0,0
+9,"I am 25 and have $10,000. Should I buy crypto?",suitability,unknown,0,0,0,0.0,8,0,0,0
