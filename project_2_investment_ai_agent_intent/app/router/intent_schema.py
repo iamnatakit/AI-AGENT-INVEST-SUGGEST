@@ -16,7 +16,7 @@ class IntentOutput(BaseModel):
 INTENT_JSON_INSTRUCTION = """
 ตอบกลับด้วย JSON object เท่านั้น ไม่มีข้อความอื่น ตาม format ต่อไปนี้:
 {
-  "domain": "<หนึ่งใน: smalltalk, general_finance, stock_quick_check, technical_analysis, fundamental_analysis, stock_deep_analysis, portfolio_analysis, news_macro, suitability, compliance, unknown>",
+  "domain": "<หนึ่งใน: smalltalk, general_finance, stock_quick_check, technical_analysis, fundamental_analysis, stock_deep_analysis, portfolio_analysis, news_macro, suitability, compliance, crypto_analysis, unknown>",
   "sub_domains": ["<หัวข้อย่อย>"],
   "ticker": "<ชื่อหุ้น หรือ null>",
   "market": "<US, TH, หรือ null>",

@@ -478,7 +478,7 @@ export default function App() {
                     <div className="intent-row">
                       <span className="intent-key">Domain</span>
                       <span className="intent-val">
-                        <span className="tag tag-purple">{lastMeta.intent.domain ?? '—'}</span>
+                        <span className={`tag ${lastMeta.intent.domain === 'crypto_analysis' ? 'tag-crypto' : 'tag-purple'}`}>{lastMeta.intent.domain ?? '—'}</span>
                       </span>
                     </div>
                     <div className="intent-row">

@@ -4,15 +4,15 @@ from typing import Dict, Any
 
 class SingleLLMClient:
     def __init__(self):
-        self.base_url = "https://openrouter.ai/api/v1"
+        self.base_url = "https://api.openai.com/v1"
 
     @property
     def model(self):
-        return os.getenv("BASELINE_MODEL", "google/gemini-2.0-flash-001")
+        return os.getenv("BASELINE_MODEL", "gpt-4o-mini")
 
     @property
     def api_key(self):
-        return os.getenv("OPENROUTER_API_KEY", "")
+        return os.getenv("OPENAI_API_KEY", "")
 
     @property
     def is_production(self):
@@ -21,14 +21,12 @@ class SingleLLMClient:
     def generate_response(self, system_prompt: str, user_message: str) -> Dict[str, Any]:
         if not self.api_key:
             if self.is_production:
-                raise RuntimeError("OPENROUTER_API_KEY is not set. Cannot run in production without a valid API key.")
+                raise RuntimeError("OPENAI_API_KEY is not set. Cannot run in production without a valid API key.")
             return self._mock_response(system_prompt, user_message)
 
         headers = {
             "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json",
-            "HTTP-Referer": "https://investment-ai-agent.local",
-            "X-Title": "Investment AI Agent (Baseline)"
+            "Content-Type": "application/json"
         }
         payload = {
             "model": self.model,
@@ -50,7 +48,7 @@ class SingleLLMClient:
             if not response.ok:
                 error_detail = response.text
                 if self.is_production:
-                    raise RuntimeError(f"OpenRouter API error {response.status_code}: {error_detail}")
+                    raise RuntimeError(f"OpenAI API error {response.status_code}: {error_detail}")
                 return self._mock_response(system_prompt, f"{user_message} (API Error {response.status_code}: {error_detail})")
             
             data = response.json()
@@ -68,18 +66,18 @@ class SingleLLMClient:
             }
         except requests.exceptions.Timeout:
             if self.is_production:
-                raise RuntimeError(f"OpenRouter API timed out after 60 seconds for model {self.model}")
+                raise RuntimeError(f"OpenAI API timed out after 60 seconds for model {self.model}")
             return self._mock_response(system_prompt, f"{user_message} (Timeout)")
         except Exception as e:
             if self.is_production:
-                raise RuntimeError(f"OpenRouter API error: {str(e)}")
+                raise RuntimeError(f"OpenAI API error: {str(e)}")
             return self._mock_response(system_prompt, f"{user_message} (API Error: {str(e)})")
 
     def _mock_response(self, system_prompt: str, user_message: str) -> Dict[str, Any]:
         """Mock fallback — ใช้เฉพาะ development เท่านั้น"""
         content = (
             f"[DEV MOCK] ได้รับคำถาม: '{user_message}' — "
-            "กรุณาตั้งค่า OPENROUTER_API_KEY และ ENVIRONMENT=production เพื่อใช้ AI จริง\n\n"
+            "กรุณาตั้งค่า OPENAI_API_KEY และ ENVIRONMENT=production เพื่อใช้ AI จริง\n\n"
             "⚠️ คำเตือน: การลงทุนมีความเสี่ยง ผู้ลงทุนอาจได้รับเงินคืนน้อยกว่าเงินลงทุนเริ่มต้น "
             "ข้อมูลนี้จัดทำขึ้นเพื่อการศึกษาเท่านั้น ไม่ถือเป็นคำแนะนำทางการเงิน"
         )
