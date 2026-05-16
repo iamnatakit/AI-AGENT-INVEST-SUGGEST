@@ -159,6 +159,21 @@ export default function App() {
           >
             📊 View Report
           </button>
+          <button 
+            onClick={() => window.open('http://localhost:8802/investment-ai-agent-intent/export-excel', '_blank')}
+            style={{
+              background: 'rgba(16, 185, 129, 0.1)',
+              border: '1px solid var(--accent-green)',
+              color: 'var(--accent-green)',
+              padding: '0.4rem 1rem',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontSize: '0.85rem',
+              fontWeight: 500
+            }}
+          >
+            📥 Export Excel
+          </button>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem' }}>
             <div className="status-dot" />
             <span style={{ color: 'var(--text-muted)' }}>Systems Online</span>

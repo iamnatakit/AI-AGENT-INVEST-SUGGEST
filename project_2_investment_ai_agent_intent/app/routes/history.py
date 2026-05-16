@@ -1,9 +1,13 @@
 from fastapi import APIRouter, Depends
+from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 from typing import List, Dict, Any
 from shared.database.db import get_db
 from shared.database.models import ChatMessage, BillingLedger
 from sqlalchemy import func
+import io
+import pandas as pd
+from datetime import datetime
 
 router = APIRouter()
 
@@ -78,6 +82,35 @@ async def get_usage_report(db: Session = Depends(get_db)):
             "by_project": project_stats,
             "recent_transactions": transactions
         }
+    except Exception as e:
+        import traceback
+        return {"error": str(e), "traceback": traceback.format_exc()}
+
+@router.get("/export-excel")
+async def export_excel_report(db: Session = Depends(get_db)):
+    try:
+        # Use underlying DB connection for pandas
+        conn = db.connection().connection
+        
+        # Export only the billing ledger to avoid multiple sheets requirement
+        df_billing = pd.read_sql_query("SELECT * FROM billing_ledger ORDER BY created_at DESC", conn)
+        
+        output = io.BytesIO()
+        # Use to_csv instead of to_excel, requires no external dependencies!
+        df_billing.to_csv(output, index=False, encoding='utf-8-sig')
+            
+        output.seek(0)
+        
+        filename = f'investment_billing_report_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv'
+        headers = {
+            'Content-Disposition': f'attachment; filename="{filename}"'
+        }
+        
+        return StreamingResponse(
+            output, 
+            headers=headers,
+            media_type='text/csv'
+        )
     except Exception as e:
         import traceback
         return {"error": str(e), "traceback": traceback.format_exc()}
