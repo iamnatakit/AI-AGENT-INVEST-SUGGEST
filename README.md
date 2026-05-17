@@ -18,4 +18,20 @@ The goal is to empirically demonstrate that an optimized architecture leveraging
 
 ## Getting Started
 
+### Running with Docker (Recommended)
+The easiest way to run the complete system (both backends and the frontend UI) is using Docker Compose:
+
+1. Ensure you have Docker and Docker Compose installed.
+2. Configure your environment variables in `.env` (copy from `.env.example`).
+3. Start the services:
+   ```bash
+   docker compose up --build -d
+   ```
+4. Access the web dashboard at: **http://localhost:3300**
+
+To stop the services, run:
+```bash
+docker compose down
+```
+
 Check out the individual project directories and read the `PROJECT_BRIEF.md` for more details.
