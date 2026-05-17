@@ -96,3 +96,35 @@ alternate_email
 content_copy
 git push origin main
 ระบบจะตอบกลับมาว่า Everything up-to-date ซึ่งแปลว่าสมบูรณ์ 100% ครับ! ลุยเขียนเล่มวิจัยต่อได้เลยครับ เป็นกำลังใจให้ครับ ✌️
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+cd "D:\AI AGENT INVEST SUGGEST\frontend_react"
+npm run dev
+
+ http://localhost:3300 ครับ
+
+cd "D:\AI AGENT INVEST SUGGEST"
+.venv\Scripts\activate
+uvicorn project_1_investment_ai_agent.app.main:app --host 127.0.0.1 --port 8801 --reload
+
+
+cd "D:\AI AGENT INVEST SUGGEST"
+.venv\Scripts\activate
+uvicorn project_2_investment_ai_agent_intent.app.main:app --host 127.0.0.1 --port 8802 --reload
