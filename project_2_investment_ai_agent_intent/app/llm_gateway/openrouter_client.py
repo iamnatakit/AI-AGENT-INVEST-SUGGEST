@@ -37,6 +37,7 @@ class OpenRouterClient:
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_message}
             ],
+            "response_format": {"type": "json_object"},
             "temperature": 0.1,
             "max_tokens": 500
         }
@@ -59,10 +60,31 @@ class OpenRouterClient:
             content = data["choices"][0]["message"]["content"]
             usage = data.get("usage", {})
 
+            # Clean and parse JSON robustly
+            parsed_json = None
+            clean_content = content.strip()
+            
+            # Remove markdown code block fences if present
+            if clean_content.startswith("```"):
+                if clean_content.startswith("```json"):
+                    clean_content = clean_content[7:]
+                elif clean_content.startswith("```"):
+                    clean_content = clean_content[3:]
+                if clean_content.endswith("```"):
+                    clean_content = clean_content[:-3]
+                clean_content = clean_content.strip()
+
             try:
-                parsed_json = json.loads(content)
+                parsed_json = json.loads(clean_content)
             except json.JSONDecodeError:
-                parsed_json = None
+                # Secondary fallback: find the first '{' and last '}'
+                start_idx = clean_content.find('{')
+                end_idx = clean_content.rfind('}')
+                if start_idx != -1 and end_idx != -1 and end_idx > start_idx:
+                    try:
+                        parsed_json = json.loads(clean_content[start_idx:end_idx+1])
+                    except json.JSONDecodeError:
+                        pass
 
             return {
                 "parsed_json": parsed_json,

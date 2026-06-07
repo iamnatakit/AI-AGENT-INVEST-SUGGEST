@@ -2,12 +2,14 @@ from typing import Dict, Any
 import os
 import json
 from project_2_investment_ai_agent_intent.app.llm_gateway.openrouter_client import OpenRouterClient
-from project_2_investment_ai_agent_intent.app.router.intent_schema import get_intent_json_schema, IntentOutput
+from project_2_investment_ai_agent_intent.app.router.intent_schema import get_intent_json_schema, IntentOutput, INTENT_JSON_INSTRUCTION
 
-INTENT_SYSTEM_PROMPT = """
+INTENT_SYSTEM_PROMPT = f"""
 คุณคือผู้จำแนกประเภทคำถาม (Intent Classifier) สำหรับระบบ Investment AI Agent
 วิเคราะห์ข้อความของผู้ใช้แล้วระบุ domain, ความซับซ้อน, และความต้องการเฉพาะ
 คุณต้องตอบเป็น JSON ที่ถูกต้องตาม JSON schema ที่กำหนดเท่านั้น
+
+{INTENT_JSON_INSTRUCTION}
 """
 
 _DEFAULT_INTENT = {
@@ -29,7 +31,7 @@ class IntentClassifier:
 
     @property
     def model(self):
-        return os.getenv("INTENT_MODEL", "google/gemini-2.0-flash-001")
+        return os.getenv("INTENT_MODEL", "google/gemini-2.0-flash-001").strip()
 
     def classify(self, user_message: str) -> Dict[str, Any]:
         try:

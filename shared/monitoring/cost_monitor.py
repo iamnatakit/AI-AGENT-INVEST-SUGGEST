@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from shared.database.models import BillingLedger
 from shared.schemas.billing_schema import BillingLedgerCreate
 
-# Standard per 1M tokens pricing (OpenRouter rates as of 2025)
+# Standard per 1M tokens pricing (OpenRouter rates as of 2025/2026)
 MODEL_PRICING = {
     # Google Gemini
     "gemini-1.5-pro": {"prompt": 1.25, "completion": 5.00},
@@ -12,6 +12,9 @@ MODEL_PRICING = {
     "google/gemini-1.5-flash-8b": {"prompt": 0.0375, "completion": 0.15},
     "google/gemini-2.0-flash-001": {"prompt": 0.10, "completion": 0.40},
     "google/gemini-2.0-pro-exp-02-05": {"prompt": 1.25, "completion": 5.00},
+    "google/gemini-3.1-flash-lite": {"prompt": 0.25, "completion": 1.50},
+    "google/gemini-3.1-pro-preview": {"prompt": 2.00, "completion": 12.00},
+    "google/gemini-3.1-pro-preview-customtools": {"prompt": 2.00, "completion": 12.00},
     # OpenAI
     "gpt-4o": {"prompt": 5.00, "completion": 15.00},
     "gpt-3.5-turbo": {"prompt": 0.50, "completion": 1.50},
@@ -26,7 +29,26 @@ MODEL_PRICING = {
 class CostMonitor:
     @staticmethod
     def calculate_cost_usd(model: str, prompt_tokens: int, completion_tokens: int) -> float:
-        pricing = MODEL_PRICING.get(model, {"prompt": 0.0, "completion": 0.0})
+        if not model:
+            return 0.0
+            
+        model_lower = model.lower()
+        if "free" in model_lower or model_lower == "none":
+            return 0.0
+
+        # Try exact match first
+        pricing = MODEL_PRICING.get(model)
+        if not pricing:
+            # Try fuzzy substring match
+            for key, val in MODEL_PRICING.items():
+                if key in model or model in key:
+                    pricing = val
+                    break
+
+        if not pricing:
+            # Fallback to standard cheap rate if unknown and not free
+            pricing = {"prompt": 0.075, "completion": 0.30}
+
         prompt_cost = (prompt_tokens / 1_000_000) * pricing["prompt"]
         completion_cost = (completion_tokens / 1_000_000) * pricing["completion"]
         return prompt_cost + completion_cost

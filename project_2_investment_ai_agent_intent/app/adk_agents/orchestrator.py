@@ -47,12 +47,15 @@ class AgentOrchestrator:
                 risk_profile_present=risk_profile_present
             )
             
-            # Fetch instructions from agent
-            instructions = getattr(agent, "instructions", "You are a helpful investment AI assistant.")
-            
-            # Generate actual text using LLM Gateway
-            llm_response = self.llm_client.generate_text_response(selected_model, instructions, user_message)
-            draft = llm_response["content"]
+            if selected_model == "none":
+                draft = "สวัสดีครับ ยินดีต้อนรับสู่ระบบให้คำปรึกษาการลงทุน มีข้อมูลใดที่คุณอยากสอบถามหรือให้ช่วยเหลือเพิ่มเติมในวันนี้ไหมครับ?"
+            else:
+                # Fetch instructions from agent
+                instructions = getattr(agent, "instructions", "You are a helpful investment AI assistant.")
+                
+                # Generate actual text using LLM Gateway
+                llm_response = self.llm_client.generate_text_response(selected_model, instructions, user_message)
+                draft = llm_response["content"]
 
         # Post-execution: Ensure all responses pass Compliance Checks
         compliance_result = self.compliance_agent.run(draft_response=draft)
